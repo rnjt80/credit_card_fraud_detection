@@ -1,0 +1,40 @@
+name: Credit card fraud detection app CICD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  
+jobs:
+  DataPipeLine:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        usage: actions/checkout@v3
+
+      - name: Setup python
+        usage: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Cache pip dependencies
+        usage: actions@cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{runner.os}}-pip-${{hashFiles('requirements.txt')}}
+          restore-keys: |
+            ${{runner.os}}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Run Pipeline
+        env:
+          DAGSHUB_TOKEN : ${{secrets.DAGSHUB_TOKEN}}
+        run: |
+          dvc repro
