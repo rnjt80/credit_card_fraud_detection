@@ -15,7 +15,7 @@ def promote_model():
     repo_name = "credit_card_fraud_detection"
 
     # set mlflow tracking uri
-    mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}'.mlflow)
+    mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
     client = mlflow.MlflowClient()
 
     model_name = "fraud_detection_model"
