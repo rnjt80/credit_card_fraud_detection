@@ -17,7 +17,7 @@ class FraudDetectionAppTests(unittest.TestCase):
         """Test if home page loads correctly."""
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(b'<title', response.data) # Ensure HTML title exists.
+        self.assertIn(b'<title>', response.data) # Ensure HTML title exists.
     
     def test_home_post_valid(self):
         """Test of home page POST request valid input works"""
@@ -33,7 +33,7 @@ class FraudDetectionAppTests(unittest.TestCase):
         """Test home page POST request with invalid input"""
         response = self.client.post('/', data = {"csv_input": "invalid,data,here"})
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Input Error', response.data) #Ensure error message.
+        self.assertIn(b'Input error', response.data) #Ensure error message.
 
     def test_predict_valid(self):
         """Test prediction endpoint with valid input"""
@@ -46,7 +46,7 @@ class FraudDetectionAppTests(unittest.TestCase):
         """Test prediction endpoint with invalid input"""
         response = self.client.post('/predict', data = {"csv_input": "invalid, data, here"})
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Error processing input'. response.data) # expect error message
+        self.assertIn(b'Error processing input', response.data) # expect error message
 
 if __name__ == '__main__':
     unittest.main()
