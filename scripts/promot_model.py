@@ -38,7 +38,7 @@ def promote_model():
         stage = "Production"
     )
 
-    print('Model version {latest_version_staging} promoted to Production.')
+    print(f'Model version {latest_version_staging} promoted to Production.')
 
 if __name__ == '__main__':
     promote_model()
