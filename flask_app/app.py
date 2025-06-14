@@ -11,26 +11,26 @@ from src.logger import logging
 # Below code is for production use
 # #------------------------------------------------
 # Set up Dagshub credentials for MLflow tracking
-dagshub_token = os.getenv("DAGSHUB_TOKEN")
-if not dagshub_token:
-    raise EnvironmentError("DAGSHUB_TOKEN environment variable not set.")
+# dagshub_token = os.getenv("DAGSHUB_TOKEN")
+# if not dagshub_token:
+#     raise EnvironmentError("DAGSHUB_TOKEN environment variable not set.")
 
-os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
-os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+# os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+# os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
 
-dagshub_url = "https://dagshub.com"
-repo_owner = "rnjt80"
-repo_name = "credit_card_fraud_detection"
-# Set up MLflow tracking URI.
-mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
+# dagshub_url = "https://dagshub.com"
+# repo_owner = "rnjt80"
+# repo_name = "credit_card_fraud_detection"
+# # Set up MLflow tracking URI.
+# mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 # #------------------------------------------------
 
 #------------------------------------------------
 # Below code is for local use
 #------------------------------------------------
-# MLFLOW_TRACKING_URI = "https://dagshub.com/rnjt80/credit_card_fraud_detection.mlflow"
+MLFLOW_TRACKING_URI = "https://dagshub.com/rnjt80/credit_card_fraud_detection.mlflow"
 # mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-# dagshub.init(repo_owner='rnjt80', repo_name='credit_card_fraud_detection', mlflow=True)
+dagshub.init(repo_owner='rnjt80', repo_name='credit_card_fraud_detection', mlflow=True)
 
 
 #----------------------------------------------

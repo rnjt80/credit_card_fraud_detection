@@ -5,9 +5,9 @@ import sys
 # Ensure the flask_app directory in the python path
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-from flask_app import app
+from flask_app.app import app
 
-class FraudDetectionAppTests(unittest.Testcase):
+class FraudDetectionAppTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
