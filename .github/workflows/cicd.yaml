@@ -24,7 +24,7 @@ jobs:
       #     python-version: '3.9'
       
       - name: Add Python to PATH
-        run: echo "/usr/local/bin" >> $GITHUB_PATH # Adjust path as needed for your installation
+        run: echo "/Users/ranjit/Library/Python/3.9/lib/python/site-packages/" >> $GITHUB_PATH # Adjust path as needed for your installation
       - name: Verify Python version and path
         run: |
           which python
