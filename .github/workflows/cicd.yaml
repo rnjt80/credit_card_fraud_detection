@@ -24,11 +24,12 @@ jobs:
       #     python-version: '3.9'
       
       - name: Add Python to PATH
-        run: echo "/Users/ranjit/Library/Python/3.9/lib/python/site-packages/" >> $GITHUB_PATH # Adjust path as needed for your installation
+        run: echo "/Users/ranjit/Library/Python/3.9/lib/python/site-packages/pip" >> $GITHUB_PATH # Adjust path as needed for your installation
       - name: Verify Python version and path
         run: |
           which python
           which pip
+          which pip3
           python --version
       
       - name: Cache pip dependencies
@@ -41,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          /usr/local/bin/pip install -r requirements.txt
+          pip3 install -r requirements.txt
       
       - name: Run Pipeline
         env:
