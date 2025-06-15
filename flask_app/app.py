@@ -6,7 +6,14 @@ import pandas as pd
 import mlflow
 import dagshub
 from flask import Flask, render_template, request
-from src.logger import logging
+
+
+#from src.logger import logging # will not work for docker image
+
+# logging setup for docker
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # #------------------------------------------------
 # Below code is for production use
 # #------------------------------------------------
@@ -75,14 +82,14 @@ def load_preprocessor(preprocessor_path):
         with open(preprocessor_path, "rb") as f:
             return pickle.load(f)
     except Exception as e:
-        logging.error(f"Error loading Powertransformer: {e}")
+        logging.error(f"Error loading PowerTransformer: {e}")
         return None
     
 # load ML components
 model = load_model(MODEL_NAME)
 power_transformer = load_preprocessor(PREPROCESSOR_PATH)
 
-FEATURE_NAMES = ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amout"]
+FEATURE_NAMES = ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amount"]
 
 #---------------------------------
 # Helper functions
@@ -102,13 +109,14 @@ def preprocess_input(data):
 # --------------------------------
 @app.route("/", methods=["GET", "POST"])
 def home():
+   
     prediction = None
     input_values = [""] * len(FEATURE_NAMES) # Ensure placeholder for form
     
     if request.method == "POST":
         csv_input = request.form.get("csv_input", "").strip()
 
-        if csv_input: 
+        if csv_input:
             try:
                 values = list(map(float, csv_input.split(",")))
 
@@ -120,9 +128,9 @@ def home():
                 
                 if transformed_features is not None and model:
                     result = model.predict(transformed_features)
-                    prediction =  "Fraud" if result[0] == 1 else "Non-Fraud"
+                    prediction = "Fraud" if result[0] == 1 else "Non-Fraud"
                 else:
-                    prediction = "Error: Model or transformer not loaded properly."
+                    prediction = "Error: Model or Transformer not loaded properly."
             except ValueError as ve:
                 prediction = f"Input error: {ve}"
             except Exception as e:
@@ -144,7 +152,7 @@ def predict():
         if transformed_features is not None and model:
             result = model.predict(transformed_features)
             return "Fraud" if result[0] == 1 else "Non-Fraud"
-        return "Error: Model or transformer not loaded properly."
+        return "Error: Model or Transformer not loaded properly."
     except Exception as e:
         return f"Error processing input: {e}"
     

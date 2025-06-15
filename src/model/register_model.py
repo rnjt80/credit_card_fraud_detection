@@ -45,11 +45,11 @@ def load_model_info(file_path: str) -> dict:
         logging.error("File not found: %s", file_path)
         raise
     except Exception as e:
-        logging.error("UNexpected error occured while loading the model info: %s", e)
+        logging.error("Unexpected error occured while loading the model info: %s", e)
         raise
 
 def register_model_and_transformer(model_name: str, model_info: dict, transformer_name: str, transformer_path: str):
-    """Register the model and power transformer to the MLflow model registerry."""
+    """Register the model and power transformer to the MLflow Model Registry."""
     try:
         client = mlflow.tracking.MlflowClient()
         
@@ -69,7 +69,7 @@ def register_model_and_transformer(model_name: str, model_info: dict, transforme
         # Log the PowerTransormer as an artifact.
         mlflow.log_artifact(transformer_path, artifact_path="preprocessing")
 
-        # Register PowerTransformer in MLflow model registery.
+        # Register PowerTransformer in MLflow model registry.
         transformer_uri = f"runs:/{model_info['run_id']}/preprocessing/{os.path.basename(transformer_path)}"
         transformer_version  = mlflow.register_model(transformer_uri, transformer_name)
 
@@ -96,7 +96,7 @@ def main():
         register_model_and_transformer(model_name, model_info, transformer_name, transformer_path)
     except Exception as e:
         logging.error('Failed to complete the model registration process: %s', e)
-        raise
+        print(f"Error: {e}")
 
 if __name__ == '__main__':
     main()
