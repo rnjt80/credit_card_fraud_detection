@@ -28,6 +28,7 @@ jobs:
       - name: Verify Python version and path
         run: |
           which python
+          which pip
           python --version
       
       - name: Cache pip dependencies
