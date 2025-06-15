@@ -23,6 +23,13 @@ jobs:
       #   with:
       #     python-version: '3.9'
       
+      - name: Add Python to PATH
+        run: echo "/usr/local/bin" >> $GITHUB_PATH # Adjust path as needed for your installation
+      - name: Verify Python version and path
+        run: |
+          which python3.9
+          python3.9 --version
+      
       - name: Cache pip dependencies
         uses: actions/cache@v3
         with:
