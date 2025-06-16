@@ -17,21 +17,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      #Commented as we are using self hosted runner where python is already setup
-      # - name: Setup python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.9'
-      
-      - name: Add Python to PATH
-        run: echo "/Users/ranjit/Library/Python/3.9/lib/python/site-packages/pip" >> $GITHUB_PATH # Adjust path as needed for your installation
-      - name: Verify Python version and path
-        run: |
-          which python
-          which pip
-          which pip3
-          python --version
-      
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+        
       - name: Cache pip dependencies
         uses: actions/cache@v3
         with:
@@ -85,10 +75,7 @@ jobs:
         with:
           push: ${{github.event_name != 'pull_request'}}
           tags: ${{vars.DOCKERHUB_USER}}/creditcard_fraud:latest
-      
-      - name: Set up kubctl
-        uses: azure/setup-kubectl@v4
-      
+
       - name: check the kubectl access
         run: |
           kubectl get pods -n default
