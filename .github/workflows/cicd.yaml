@@ -11,7 +11,7 @@ env:
 
 jobs:
   DataPipeLine:
-    runs-on: my-laptop-kind-runner
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
