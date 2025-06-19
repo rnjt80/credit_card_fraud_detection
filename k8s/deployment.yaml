@@ -32,6 +32,6 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: dagshubtoken
-                  key: dagshub_token
+                  key: DAGSHUB_TOKEN
       imagePullSecrets:
         - name: dockerhub-creds
