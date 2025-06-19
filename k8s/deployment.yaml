@@ -16,22 +16,22 @@ spec:
         app: flask-app
     spec:
       containers:
-      - name: flask-app
-        image: rnjt80/credicard_fraud:sha-99d25ccb03ac3d51cad974419cd1c9a62ac497fb
-        ports:
-        - containerPort: 8000
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "1"
-        env:
-        - name: dagshub_token
-          valueFrom:
-            secretKeyRef:
-              name: DagsHubToken
-              key: dagshub_token
+        - name: flask-app
+          image: rnjt80/creditcard_fraud:30abd4e57024900e73e7c676655de8e436d4e9b6
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          env:
+            - name: dagshub_token
+              valueFrom:
+                secretKeyRef:
+                  name: DagsHubToken
+                  key: dagshub_token
       imagePullSecrets:
-      - name: dockerhub-creds
+        - name: dockerhub-creds
