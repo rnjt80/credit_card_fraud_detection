@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namesapce: creditcard-fraud
+  labels:
+    app: flask-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: rnjt80/credicard_fraud:sha-99d25ccb03ac3d51cad974419cd1c9a62ac497fb
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        env:
+        - name: dagshub_token
+          valueFrom:
+            secretKeyRef:
+              name: DagsHubToken
+              key: dagshub_token
+      imagePullSecrets:
+      - name: dockerhub-creds
