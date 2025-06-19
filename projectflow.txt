@@ -70,4 +70,16 @@
 
 37. Create secrets in k8s for dagshub token and dockerhub creds
     - kubectl create secret generic dagshubtoken --from-literal=dagshub_token=e915ac7b7XXXXXXXca4f93f462f33be -n creditcard-fraud
-    - ubectl create secret docker-registry dockerhub-creds --docker-server='https://hub.docker.com/' --docker-username='rnjt80' --docker-password='dckr_pat_8iiRM' -n creditcard-fraud 
+    - ubectl create secret docker-registry dockerhub-creds --docker-server='https://hub.docker.com/' --docker-username='rnjt80' --docker-password='dckr_pat_8iiRM' -n creditcard-fraud
+
+38. Create k8s folder and Add deployment.yaml, service.yaml and ingress.yaml file.
+
+39. Install ArgoCD using the official manifests:
+    >> kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    >> Expose the ArgoCD server (for local dev) - By default, ArgoCD server is ClusterIP (internal only), so let’s patch it to 
+    NodePort (so you can access it via your browser): kubectl patch svc argocd-server -n argocd -p '{\"spec\": {\"type\": \"NodePort\"}}'
+
+39. In Argocd create a application with the github repo and path k8s.
+40. click on SYNC button apply your Kubernetes manifests. This will deploy your app to Kubernetes cluster.
+41. Now add steps to cicd github action workflow file to change the image name in deployment file as soon as the new image is created by CICD jobs
+42. Do git commit and push 

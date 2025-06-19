@@ -6,11 +6,13 @@ on:
       - main
     paths-ignore:
       - "k8s/**"
+      - "projectflow.txt"
   pull_request:
     branches:
       - main
     paths-ignore:
       - "k8s/**"
+      - "projectflow.txt"
 
 env:
   IMAGE_NAME: '${{vars.DOCKERHUB_USER}}/creditcard_fraud'
