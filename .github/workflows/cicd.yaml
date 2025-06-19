@@ -85,12 +85,6 @@ jobs:
         with:
           push: ${{github.event_name == 'push'}}
           tags: ${{env.IMAGE_NAME}}:${{ github.sha }}
-
-      # - name: Build and push Docker image
-      #   run: |
-      #     IMAGE_TAG="sha-${{ github.sha }}" #Use github sha for unique tag
-      #     echo "Bulding Image: ${IMAGE_NAME}:${IMAGE_TAG}"
-      #     docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
       
       - name: Install yq(YAML processor)
         if: github.event_name == 'push'
