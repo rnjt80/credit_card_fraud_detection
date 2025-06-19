@@ -28,7 +28,7 @@ spec:
               memory: "512Mi"
               cpu: "1"
           env:
-            - name: dagshub_token
+            - name: DAGSHUB_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: dagshubtoken
