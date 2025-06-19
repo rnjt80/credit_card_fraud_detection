@@ -102,8 +102,9 @@ jobs:
       
       - name: Update k8s deployment image tag
         if: github.event_name == 'push'
+        env: 
+          NEW_IMAGE_TAG: "${{env.IMAGE_NAME}}:${{ github.sha }}"
         run: |
-          NEW_IMAGE_TAG="${{env.IMAGE_NAME}}:${{ github.sha }}"
           echo "Updating image in ${K8S_MANIFEST_PATH} to ${NEW_IMAGE_TAG}"
           yq e '.spec.template.spec.containers[0].image = env(NEW_IMAGE_TAG)' -i "${K8S_MANIFEST_PATH}"
 
