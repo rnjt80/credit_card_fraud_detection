@@ -6,7 +6,8 @@ import pandas as pd
 import mlflow
 import dagshub
 from flask import Flask, render_template, request
-
+from prometheus_client import Counter, Histogram, generate_latest, CollectorRegistry, CONTENT_TYPE_LATEST
+import time
 
 #from src.logger import logging # will not work for docker image
 
@@ -30,7 +31,7 @@ repo_owner = "rnjt80"
 repo_name = "credit_card_fraud_detection"
 # Set up MLflow tracking URI.
 mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
-# #------------------------------------------------
+#------------------------------------------------
 
 #------------------------------------------------
 # Below code is for local use
@@ -48,6 +49,12 @@ PREPROCESSOR_PATH = "models/power_transformer.pkl"
 
 # Initialize flask app
 app = Flask(__name__)
+
+# Custom Metrics for Monitoring
+registry = CollectorRegistry()
+REQUEST_COUNT = Counter("app_request_count", "Total requests", ["method", "endpoint"], registry=registry)
+REQUEST_LATENCY = Histogram("app_request_latency_seconds", "Latency of requests", ["endpoint"], registry=registry)
+PREDICTION_COUNT = Counter("model_prediction_count", "Count of predictions", ["prediction"], registry=registry)
 
 #------------------------------------
 # Load model and preprocessor
@@ -109,7 +116,9 @@ def preprocess_input(data):
 # --------------------------------
 @app.route("/", methods=["GET", "POST"])
 def home():
-   
+    
+    REQUEST_COUNT.labels(method="GET", endpoint="/").inc()
+    start_time = time.time()
     prediction = None
     input_values = [""] * len(FEATURE_NAMES) # Ensure placeholder for form
     
@@ -135,10 +144,14 @@ def home():
                 prediction = f"Input error: {ve}"
             except Exception as e:
                 prediction = f"Processing error: {e}"
+
+    REQUEST_LATENCY.labels(endpoint="/").observe(time.time() - start_time)
     return render_template("index.html", result = prediction, csv_input=",".join(map(str, input_values)))
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    REQUEST_COUNT.labels(method="POST", endpoint="/prediction").inc()
+    start_time = time.time()
     csv_input = request.form.get("csv_input", "").strip()
     if not csv_input:
         return "Error: no input provided"
@@ -152,9 +165,15 @@ def predict():
         if transformed_features is not None and model:
             result = model.predict(transformed_features)
             return "Fraud" if result[0] == 1 else "Non-Fraud"
+            PREDICTION_COUNT.labels(prediction=str(prediction)).inc()
+            REQUEST_LATENCY.labels(endpoint="/prediction").observe(time.time() - start_time)
         return "Error: Model or Transformer not loaded properly."
     except Exception as e:
         return f"Error processing input: {e}"
+    
+@app.route("/metrics", methods=["GET"])
+def metrics():
+    return generate_latest(registry), 200, {"Content-Type": CONTENT_TYPE_LATEST}
     
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8000)
