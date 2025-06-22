@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: creditcard-fraud.172.18.0.7.nip.io
+    - host: creditcard-fraud.172.18.0.2.nip.io
       http:
         paths:
           - path: /
