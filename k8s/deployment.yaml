@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: rnjt80/creditcard_fraud:e8cf9995c68a3208793e7121b9720d92bfb0d004
+          image: rnjt80/creditcard_fraud:dfee34052b4470131ff703ab9afd2a6cd39dc68f
           ports:
             - containerPort: 8000
           resources:
