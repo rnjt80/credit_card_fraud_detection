@@ -150,7 +150,7 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    REQUEST_COUNT.labels(method="POST", endpoint="/prediction").inc()
+    REQUEST_COUNT.labels(method="POST", endpoint="/predict").inc()
     start_time = time.time()
     csv_input = request.form.get("csv_input", "").strip()
     if not csv_input:
