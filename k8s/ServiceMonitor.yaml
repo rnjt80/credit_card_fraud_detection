@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: creditcard-fraud-servicemonitor
+  labels:
+    release: stable
+spec:
+  selector:
+    matchLabels:
+      app: flask-app # Matches the label on your Service
+  endpoints:
+  - port: 8000 # The name of the port in your Service definition
+    path: /metrics # The path to your metrics endpoint
+    interval: 15s # How often to scrape
+  namespaceSelector: # IMPORTANT: This defines which namespaces to look for services in
+    matchNames:
+      - creditcard-fraud

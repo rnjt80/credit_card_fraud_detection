@@ -14,6 +14,12 @@ spec:
     metadata:
       labels:
         app: flask-app
+      annotations:
+        # Important: Prometheus Operator often looks for these annotations
+        # on pods/services if not explicitly specified in ServiceMonitor
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8000"
     spec:
       containers:
         - name: flask-app
