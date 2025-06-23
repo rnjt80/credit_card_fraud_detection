@@ -5,7 +5,8 @@ metadata:
   namespace: creditcard-fraud
 spec: 
   ports:
-  - port: 8000
+  - name: web
+    port: 8000
     protocol: TCP
   type: ClusterIP
   selector:
