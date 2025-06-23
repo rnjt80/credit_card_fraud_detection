@@ -166,11 +166,13 @@ def predict():
             result = model.predict(transformed_features)
             return "Fraud" if result[0] == 1 else "Non-Fraud"
             PREDICTION_COUNT.labels(prediction=str(prediction)).inc()
-            REQUEST_LATENCY.labels(endpoint="/prediction").observe(time.time() - start_time)
+            REQUEST_LATENCY.labels(endpoint="/predict").observe(time.time() - start_time)
         return "Error: Model or Transformer not loaded properly."
     except Exception as e:
         return f"Error processing input: {e}"
+
     
+
 @app.route("/metrics", methods=["GET"])
 def metrics():
     return generate_latest(registry), 200, {"Content-Type": CONTENT_TYPE_LATEST}
