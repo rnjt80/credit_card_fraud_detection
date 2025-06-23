@@ -25,7 +25,8 @@ spec:
         - name: flask-app
           image: rnjt80/creditcard_fraud:5bd2f0b4710c77dc6901829f4b50b94cbeac4dd7
           ports:
-            - containerPort: 8000
+            - name: web
+              containerPort: 8000
           resources:
             requests:
               memory: "256Mi"
